@@ -42,6 +42,16 @@ const findUserByName = (name) => {
   );
 };
 
+const generateId = (job, name) => {
+  //Generate an ID based on job, name, and random number
+  let id = job.substring(0, 3) + name.substring(0, 3) + Math.floor(Math.random() * 1000);
+  //Then makes sure that the id is unique, if not, regenerates in while loop
+  while(findUserById(id) !== undefined){
+    id = job.substring(0, 3) + name.substring(0, 3) + Math.floor(Math.random() * 1000);
+  }
+  return id;
+}
+
 const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
 
@@ -55,6 +65,7 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
+  userToAdd["id"] = generateId(userToAdd["job"], userToAdd["name"]);
   addUser(userToAdd);
   res.send(201);
 });
