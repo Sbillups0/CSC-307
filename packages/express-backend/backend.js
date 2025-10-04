@@ -67,7 +67,7 @@ app.post("/users", (req, res) => {
   const userToAdd = req.body;
   userToAdd["id"] = generateId(userToAdd["job"], userToAdd["name"]);
   addUser(userToAdd);
-  res.send(201);
+  res.status(201).json(userToAdd);
 });
 
 app.get("/users/:id", (req, res) => {
