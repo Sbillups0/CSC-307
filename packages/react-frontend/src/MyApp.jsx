@@ -5,6 +5,17 @@ import React, {useState, useEffect} from 'react';
 function MyApp() {
     const [characters, setCharacters] = useState([]);
     
+    function postUser(person) {
+        const promise = fetch("Http://localhost:8000/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(person),
+        });
+        return promise;
+    }
+
     function fetchUsers() {
         const promise = fetch("http://localhost:8000/users");
         return promise;
@@ -17,8 +28,20 @@ function MyApp() {
     }
 
     function updateList(person){
-        setCharacters([...characters, person]);
+        postUser(person)
+        .then((res) => {
+            if(res.status === 201){
+                setCharacters([...characters, person])
+            }
+            else{
+                console.log(`Failed to add user with status ${res.status}`);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
+
     useEffect(() => {
         fetchUsers()
             .then((res) => res.json())
@@ -35,6 +58,6 @@ function MyApp() {
             <Form handleSubmit={updateList} />
         </div>
     );
-  }
+}
 //Allows for use in other files
 export default MyApp;
