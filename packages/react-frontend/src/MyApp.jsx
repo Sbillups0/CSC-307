@@ -2,6 +2,7 @@ import Table from "./Table";
 import Form from "./Form";
 import React, {useState, useEffect} from 'react';
 
+
 function MyApp() {
     const [characters, setCharacters] = useState([]);
     
@@ -21,7 +22,7 @@ function MyApp() {
         return promise;
     }
     function removeOneCharacter(index){
-        let id = characters[index]["id"];
+        let id = characters[index]["_id"];
         let link = "Http://localhost:8000/users/" + id;
         const promise = fetch(link, {method: "DELETE"});
         promise.then((res) => {
